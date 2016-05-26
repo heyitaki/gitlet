@@ -22,7 +22,7 @@ import java.util.HashMap;
 
 
 public class FileHelper {
-    public static final String initialCommit = "0000000000000000000000000000000000000000000000000000000000000000.commit"; //ASK IF WE CAN USE SHA256 IDs???
+    public static final String initialCommit = "0000000000000000000000000000000000000000000000000000000000000000.commit"; 
 
     public static String getHash256(String filename) throws NoSuchAlgorithmException, IOException {
         MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
@@ -40,7 +40,6 @@ public class FileHelper {
         for (int i = 0; i < hashBytes.length; i++) {
             sb.append(Integer.toString((hashBytes[i] & 0xff) + 0x100, 16).substring(1));
             //sb.append(Integer.toString(conversionArray[hashBytes[i]]));
-            //System.out.println((hashBytes[i] & 0xff) + 0x100);
         }
         
         fis.close();
@@ -48,7 +47,7 @@ public class FileHelper {
         return fileHash;
     }
     
-    /*public static String treeToObject (String srcDir, String destDir) throws FileNotFoundException, IOException, NoSuchAlgorithmException {
+    public static String treeToObject (String srcDir, String destDir) throws FileNotFoundException, IOException, NoSuchAlgorithmException {
         String srcPath, hashFile, destPath, hashTree, dir;
         Stack<String> dirs = new Stack<String>();
         dirs.push("");
@@ -99,10 +98,9 @@ public class FileHelper {
             copyFile(srcPath, destPath);
         }
         in.close();
-    } */
+    } 
 
     public static void copyFile(String srcPath, String destPath) throws IOException, FileNotFoundException {
-//    	System.out.println(srcPath + "->"+destPath);
         File destFile = new File(destPath);
         if (!destFile.exists()) { 
             (Paths.get(destPath)).getParent().toFile().mkdirs();

@@ -143,9 +143,7 @@ public class Remote {
             } else {
                 String remoteCommit = br.readLine();
                 br.close();
-                String localCommit = FileHelper.getCommit(State.head);
-//System.out.println("remoteCommit=" + remoteCommit);                
-//System.out.println("localCommit=" + localCommit);                
+                String localCommit = FileHelper.getCommit(State.head);               
                 ArrayList<String> localCommits = FileHelper.getCommitTree(localCommit, FileHelper.initialCommit);
                 if (localCommits.contains(remoteCommit)) {
                     System.out.println("Already up-to-date.");
@@ -156,8 +154,7 @@ public class Remote {
                 if (remoteCommits.contains(localCommit)) {
                     ArrayList<String> commits = getRemoteCommitTree(userName, serverName, src, remoteCommit, localCommit);
                     for (int i = commits.size() - 2; i >= 0; i--) {
-                        String commit = commits.get(i);
-//System.out.println("i=" + i + ", commit=" + commit);                        
+                        String commit = commits.get(i);                   
                         execute("scp " + userName + "@" + serverName + ":" + gitlet + "/commits/" + commit + " " + "./.gitlet/commits/" + commit, null);
                         if (!commit.equals(FileHelper.initialCommit)) {
                             String tree = FileHelper.getTree(commit);
@@ -178,12 +175,9 @@ public class Remote {
                 	remoteCommits.retainAll(localCommits);
                     String commonAncestor = remoteCommits.get(0);
 
-//                	System.out.println("CASE 3 ----------------");
-//                	System.out.println("commonAncestor="+commonAncestor);
                     ArrayList<String> commits = getRemoteCommitTree(userName, serverName, src, remoteCommit, commonAncestor);
                     for (int i = commits.size() - 2; i >= 0; i--) {
                         String commit = commits.get(i);
-//                    	System.out.println("Remote commit="+commit);
 
                     	execute("scp " + userName + "@" + serverName + ":" + gitlet + "/commits/" + commit + " " + "./.gitlet/commits/" + commit, null);
 
@@ -205,7 +199,6 @@ public class Remote {
                        String localFileHash = localCommitFiles.get(fileName);
                        if (ancestorFileHash == null || !ancestorFileHash.equals(localFileHash)) {
                            modifiedFiles.put(fileName, localFileHash);
-//                           System.out.println("fileName=" + fileName + ", localFileHash="+localFileHash);
                        }
                    }
 
@@ -218,8 +211,7 @@ public class Remote {
 	                    String treeName = FileHelper.createTree(CommitFiles);
 	                    
 	                    String commit = FileHelper.commitFromTree(remoteCommit, treeName, FileHelper.getCommitMessage(localCommit) + " - merged");
-                    	Commands.reset(commit.substring(0,  64));
-//System.out.println("Final Commit=" + commit);                    	
+                    	Commands.reset(commit.substring(0,  64));                	
                     } else {
                     	Commands.reset(remoteCommit.substring(0,  64));
                     }
@@ -263,7 +255,6 @@ public class Remote {
         BufferedReader br = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
         while ((s = br.readLine()) != null) {
            error = true;
-           //System.out.println("Error: " + s);
         }
 
         br.close();
@@ -275,13 +266,11 @@ public class Remote {
     }
 
     public static ArrayList<String> getRemoteCommitTree(String userName, String serverName, String src, String startCommit, String endCommit) throws IOException {
-//System.out.println("getRemoteCommitTree");    	
         ArrayList<String> commitTree = new ArrayList<String>();
         String prevCommit = startCommit;
 		String gitletCommit = src + "/.gitlet/commits/";
 
-		while (true) {
-//System.out.println("prevCommit=" + prevCommit);    	
+		while (true) { 	
 			commitTree.add(prevCommit);
 			if (prevCommit.equals(endCommit)) {
 				break;
